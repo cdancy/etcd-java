@@ -28,19 +28,16 @@ repositories {
 }
 
 dependencies {
-    
     compile 'org.slf4j:slf4j-api:1.7.21'
     compile 'io.atomix.copycat:copycat-server:1.1.4'
-    compile 'org.apache.commons:commons-lang3:3.4'
-    compile group: 'io.atomix.catalyst', name: 'catalyst-local', version: '1.1.1'
-    compile group: 'co.cask.http', name: 'netty-http', version: '0.16.0'
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
-    compile group: 'com.google.guava', name: 'guava', version: '19.0'
-    compile group: 'javax.inject', name: 'javax.inject', version: '1'
-    compile group: 'org.reflections', name: 'reflections', version: '0.9.10'
-    compile group: 'io.protostuff', name: 'protostuff-core', version: '1.5.1'
-    compile group: 'io.protostuff', name: 'protostuff-runtime', version: '1.5.1'
-    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.7'
+    compile 'io.atomix.catalyst:catalyst-local:1.1.1'
+    compile 'co.cask.http:netty-http:0.16.0'
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.google.guava:guava:19.0'
+    compile 'javax.inject:javax.inject:1'
+    compile 'org.reflections:reflections:0.9.10'
+    compile 'ch.qos.logback:logback-classic:1.1.7'
+    compile 'javax.ws.rs:javax.ws.rs-api:2.0.1'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.1.0'

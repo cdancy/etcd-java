@@ -24,13 +24,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Serves the 'cluster' endpoint.
+ * Serves the 'stats' endpoint.
  * 
  * @author cdancy
  */
-@Path("/v3alpha/cluster")
+@Path("/v2/stats")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
-public class Cluster extends AbstractHttpHandler {
+public class Stats extends AbstractHttpHandler {
     
 }

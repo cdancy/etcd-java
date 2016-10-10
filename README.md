@@ -1,7 +1,7 @@
 # etcd-java
 ![alt tag](https://github.com/cdancy/etcd/blob/master/logos/etcd-horizontal-color.png)
 
-Java implementation of Etcd. 
+Java implementation of Etcd v2. 
 
 ## Status
 <a href='https://bintray.com/cdancy/java-libraries/etcd-java/view?source=watch' alt='Get automatic notifications about new "etcd-java" versions'><img src='https://www.bintray.com/docs/images/bintray_badge_color.png'></a>

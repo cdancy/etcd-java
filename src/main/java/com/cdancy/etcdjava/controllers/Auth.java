@@ -28,7 +28,7 @@ import javax.ws.rs.core.MediaType;
  * 
  * @author cdancy
  */
-@Path("/v3alpha/auth")
+@Path("/v2/auth")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
 public class Auth extends AbstractHttpHandler {

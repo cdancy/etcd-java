@@ -54,6 +54,7 @@ public class EtcdJava {
      */
     public synchronized void stop() {
         logger.info("Stopping etcd-java ...");
+        
         try {
             clientServer.stop();
         } catch (Exception e) {
@@ -79,7 +80,7 @@ public class EtcdJava {
         server.start();
         
         try {
-            Thread.sleep(20000);            
+            Thread.sleep(200000);            
         } catch (Exception e) {
             Throwables.propagate(e);
         }

@@ -24,13 +24,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Serves the 'kv' endpoint.
+ * Serves the 'keys' endpoint.
  * 
  * @author cdancy
  */
-@Path("/v3alpha/kv")
+@Path("/v2/keys")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
-public class KV extends AbstractHttpHandler {
+public class Keys extends AbstractHttpHandler {
     
 }

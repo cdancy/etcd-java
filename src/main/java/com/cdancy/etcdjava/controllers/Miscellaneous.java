@@ -36,7 +36,6 @@ import org.jboss.netty.handler.codec.http.HttpResponseStatus;
  * 
  * @author cdancy
  */
-@Path("/v3alpha")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
 public class Miscellaneous extends AbstractHttpHandler {
@@ -70,5 +69,18 @@ public class Miscellaneous extends AbstractHttpHandler {
         Health health = new Health();
         health.health = String.valueOf(EtcdJavaUtils.isHealthy());
         responder.sendJson(HttpResponseStatus.OK, health);
+    }
+    
+    /**
+     * Serves the 'metrics' endpoint.
+     * 
+     * @param request HttpRequest
+     * @param responder HttpResponder
+     */
+    @Named("miscellaneous:metrics")
+    @Path("/metrics")
+    @GET
+    public void metrics(HttpRequest request, HttpResponder responder) {
+        responder.sendString(HttpResponseStatus.OK, "no-op");
     }
 }

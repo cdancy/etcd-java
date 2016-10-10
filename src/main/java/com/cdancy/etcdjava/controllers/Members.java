@@ -24,13 +24,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Serves the 'watch' endpoint.
+ * Serves the 'members' endpoint.
  * 
  * @author cdancy
  */
-@Path("/v3alpha/watch")
+@Path("/v2/members")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
-public class Watch extends AbstractHttpHandler {
+public class Members extends AbstractHttpHandler {
     
 }

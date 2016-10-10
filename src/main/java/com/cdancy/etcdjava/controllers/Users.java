@@ -24,13 +24,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Serves the 'maintenance' endpoint.
+ * Serves the 'users' endpoint.
  * 
  * @author cdancy
  */
-@Path("/v3alpha/maintenance")
+@Path("/v2/auth/users")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
-public class Maintenance extends AbstractHttpHandler {
+public class Users extends AbstractHttpHandler {
     
 }

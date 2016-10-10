@@ -24,13 +24,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Serves the 'lease' endpoint.
+ * Serves the 'roles' endpoint.
  * 
  * @author cdancy
  */
-@Path("/v3alpha/lease")
+@Path("/v2/auth/roles")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
-public class Lease extends AbstractHttpHandler {
+public class Roles extends AbstractHttpHandler {
     
 }
