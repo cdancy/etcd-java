@@ -28,7 +28,7 @@ import javax.ws.rs.core.MediaType;
  * 
  * @author cdancy
  */
-@Path("/v2/stats")
+@Path("/{version}/stats")
 @Produces(MediaType.APPLICATION_JSON)
 @Controller
 public class Stats extends AbstractHttpHandler {

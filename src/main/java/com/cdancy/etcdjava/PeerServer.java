@@ -17,6 +17,7 @@
 
 package com.cdancy.etcdjava;
 
+import com.cdancy.etcdjava.utils.EtcdJavaUtils;
 import com.google.common.base.Throwables;
 import io.atomix.catalyst.transport.Address;
 import io.atomix.catalyst.transport.local.LocalServerRegistry;
@@ -39,24 +40,35 @@ public final class PeerServer {
     private volatile CopycatServer copycatServer;
     private String host = "0.0.0.0";
     private int port = 2380;
+    private File logsDirectory = new File(System.getProperty("user.dir") + "/default.etcd");
     
     public PeerServer() {
-        init();     
+
+    }
+    
+    public PeerServer(int port) {
+        this.port = port;
+    }
+    
+    public PeerServer(String host, int port) {
+        this.host = host;
+        this.port = port;
     }
     
     private void init() {
         copycatServer = CopycatServer.builder(new Address(host, port))
-                .withName("etcd-java-peer")
+                .withName(name())
                 .withStateMachine(EtcdJavaStateMachine::new)
                 .withTransport(new LocalTransport(new LocalServerRegistry()))
                 .withStorage(Storage.builder()
-                    .withDirectory(new File("etcd-java-logs"))
+                    .withDirectory(logsDirectory)
                     .withStorageLevel(StorageLevel.DISK)
                     .build())
                 .build();
     }
     
     protected void start() {
+        init();
         copycatServer.bootstrap().join();
     }
     
@@ -66,5 +78,9 @@ public final class PeerServer {
         } catch (TimeoutException | InterruptedException | ExecutionException e) {
             Throwables.propagate(e);
         }
+    }
+    
+    private String name() {
+        return System.getProperty("name") + "-peer";
     }
 }

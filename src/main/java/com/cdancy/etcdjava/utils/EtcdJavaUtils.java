@@ -28,10 +28,6 @@ import java.text.DateFormat;
  */
 public class EtcdJavaUtils {
     
-    public static final String version = "v3";
-    public static final String serverVersion = "3.0.0";
-    public static final String clusterVersion = "3.0.0";
-    
     public static final Gson gson = new GsonBuilder()
              .enableComplexMapKeySerialization()
              .serializeNulls()
@@ -41,5 +37,12 @@ public class EtcdJavaUtils {
     
     public static boolean isHealthy() {
         return true;
+    }
+    
+    public static void setSystemPropertyIfNonExistent(String key, String value) {
+        String previousValue = System.getProperty(key);
+        if (previousValue == null) {
+            System.setProperty(key, value);
+        }
     }
 }

@@ -17,6 +17,7 @@
 
 package com.cdancy.etcdjava;
 
+import com.cdancy.etcdjava.utils.EtcdJavaUtils;
 import com.google.common.base.Throwables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,13 +31,21 @@ import org.slf4j.LoggerFactory;
 public class EtcdJava {
         
     private static final Logger logger = LoggerFactory.getLogger(EtcdJava.class);
-
+    
     private final ClientServer clientServer;
     private final PeerServer peerServer;
     
     public EtcdJava() {
+        init();
         clientServer = new ClientServer();
         peerServer = new PeerServer();
+    }
+    
+    private void init() {
+        EtcdJavaUtils.setSystemPropertyIfNonExistent("name", "etcd-java");
+        EtcdJavaUtils.setSystemPropertyIfNonExistent("version", "v2");
+        EtcdJavaUtils.setSystemPropertyIfNonExistent("serverVersion", "2.0.0");
+        EtcdJavaUtils.setSystemPropertyIfNonExistent("clusterVersion", "2.0.0");
     }
     
     /**
@@ -54,13 +63,11 @@ public class EtcdJava {
      */
     public synchronized void stop() {
         logger.info("Stopping etcd-java ...");
-        
         try {
             clientServer.stop();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
         try {
             peerServer.stop();
         } catch (Exception e) {

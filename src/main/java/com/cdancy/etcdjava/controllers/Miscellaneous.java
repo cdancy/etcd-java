@@ -51,8 +51,8 @@ public class Miscellaneous extends AbstractHttpHandler {
     @GET
     public void version(HttpRequest request, HttpResponder responder) {
         Version version = new Version();
-        version.etcdserver = EtcdJavaUtils.serverVersion;
-        version.etcdcluster = EtcdJavaUtils.serverVersion;
+        version.etcdserver = System.getProperty("serverVersion");
+        version.etcdcluster = System.getProperty("clusterVersion");
         responder.sendJson(HttpResponseStatus.OK, version);
     }
     

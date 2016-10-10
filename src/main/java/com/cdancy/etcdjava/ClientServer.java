@@ -19,6 +19,7 @@ package com.cdancy.etcdjava;
 
 import co.cask.http.NettyHttpService;
 import com.cdancy.etcdjava.annotations.Controller;
+import com.cdancy.etcdjava.utils.EtcdJavaUtils;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
@@ -44,11 +45,15 @@ public final class ClientServer {
     private int port = 2379;
         
     public ClientServer() {
-        init();
+
+    }
+    
+    public ClientServer(int port) {
+        this.port = port;
     }
     
     private void init() {
-        nettyHttpService = NettyHttpService.builder("etcd-java-client")
+        nettyHttpService = NettyHttpService.builder(name())
                 .setPort(port)
                 .addHttpHandlers(getControllers())
                 .build();        
@@ -56,6 +61,7 @@ public final class ClientServer {
     
     protected void start() {
         try {
+            init();
             nettyHttpService.startAsync().awaitRunning(1, TimeUnit.MINUTES);
         } catch (TimeoutException e) {
             Throwables.propagate(e);
@@ -85,5 +91,9 @@ public final class ClientServer {
             }
         }
         return ImmutableList.copyOf(controllers);
+    }
+    
+    public String name() {
+        return System.getProperty("name") + "-client";
     }
 }
