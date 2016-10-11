@@ -5,8 +5,9 @@ Java implementation of Etcd v2.
 
 ## Status
 <a href='https://bintray.com/cdancy/java-libraries/etcd-java/view?source=watch' alt='Get automatic notifications about new "etcd-java" versions'><img src='https://www.bintray.com/docs/images/bintray_badge_color.png'></a>
-[ ![Download](https://api.bintray.com/packages/cdancy/java-libraries/etcd-java/images/download.png) ](https://bintray.com/cdancy/java-libraries/etcd-java/_latestVersion)
 [![Build Status](https://travis-ci.org/cdancy/etcd-java.svg?branch=master)](https://travis-ci.org/cdancy/etcd-java)
+
+** Project is currently in development and NOT ready for ANY sort of use **
 
 ## Setup
 
@@ -55,7 +56,6 @@ Running integration tests without invoking docker can be done like so:
 
 ## Additional Resources
 
-* [Etcd proto API](https://github.com/coreos/etcd/blob/master/etcdserver/etcdserverpb/rpc.proto)
 * [Etcd grpc-to-json gateway](https://github.com/coreos/etcd/blob/master/Documentation/dev-guide/api_grpc_gateway.md)
 * [Etcd grpc-to-json swagger](https://github.com/coreos/etcd/blob/master/Documentation/dev-guide/apispec/swagger/rpc.swagger.json)
 * [Etcd REST API](https://github.com/coreos/etcd/blob/master/Documentation/api.md)
