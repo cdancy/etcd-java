@@ -15,39 +15,27 @@
  * limitations under the License.
  */
 
-package com.cdancy.etcdjava.utils;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.text.DateFormat;
+package com.cdancy.etcdjava;
 
 /**
- * Static methods/variables used for system-wide purpose.
+ * Actions for `Key` requests.
  * 
  * @author cdancy
  */
-public class EtcdJavaUtils {
+public enum KeyActions {
     
-    public static final Gson gson = new GsonBuilder()
-             .enableComplexMapKeySerialization()
-             .setDateFormat(DateFormat.LONG)
-             .setLenient()
-             .create();
+    SET("set"),
+    GET("get"),
+    DELETE("delete");
     
-    public static boolean isHealthy() {
-        return true;
+    private final String name;
+    
+    private KeyActions(String name) {
+        this.name = name;
     }
     
-    /**
-     * Set a system property if key does not already exist.
-     * 
-     * @param key system key to set
-     * @param value system value to set
-     */
-    public static void setSystemPropertyIfAbsent(String key, String value) {
-        String previousValue = System.getProperty(key);
-        if (previousValue == null) {
-            System.setProperty(key, value);
-        }
+    @Override
+    public String toString() {
+        return name;
     }
 }

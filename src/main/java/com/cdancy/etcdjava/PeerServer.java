@@ -17,15 +17,16 @@
 
 package com.cdancy.etcdjava;
 
-import com.cdancy.etcdjava.utils.EtcdJavaUtils;
 import com.google.common.base.Throwables;
+import io.atomix.AtomixReplica;
 import io.atomix.catalyst.transport.Address;
 import io.atomix.catalyst.transport.local.LocalServerRegistry;
 import io.atomix.catalyst.transport.local.LocalTransport;
-import io.atomix.copycat.server.CopycatServer;
+import io.atomix.collections.DistributedMap;
 import io.atomix.copycat.server.storage.Storage;
 import io.atomix.copycat.server.storage.StorageLevel;
 import java.io.File;
+import java.time.Duration;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -37,10 +38,11 @@ import java.util.concurrent.TimeoutException;
  */
 public final class PeerServer {
     
-    private volatile CopycatServer copycatServer;
+    private volatile AtomixReplica atomixReplica;
     private String host = "0.0.0.0";
     private int port = 2380;
     private File logsDirectory = new File(System.getProperty("user.dir") + "/default.etcd");
+    private static volatile DistributedMap<String, String> mapResource = null;
     
     public PeerServer() {
 
@@ -56,25 +58,29 @@ public final class PeerServer {
     }
     
     private void init() {
-        copycatServer = CopycatServer.builder(new Address(host, port))
-                .withName(name())
-                .withStateMachine(EtcdJavaStateMachine::new)
+        atomixReplica = AtomixReplica.builder(new Address(host, port))
                 .withTransport(new LocalTransport(new LocalServerRegistry()))
                 .withStorage(Storage.builder()
                     .withDirectory(logsDirectory)
                     .withStorageLevel(StorageLevel.DISK)
+                    .withMinorCompactionInterval(Duration.ofSeconds(30))
+                    .withMajorCompactionInterval(Duration.ofMinutes(1))
+                    .withMaxSegmentSize(1024 * 1024 * 8)
+                    .withMaxEntriesPerSegment(1024 * 8)
                     .build())
                 .build();
+        atomixReplica.serializer().disableWhitelist();
     }
     
     protected void start() {
         init();
-        copycatServer.bootstrap().join();
+        atomixReplica.bootstrap().join();
+        mapResource = atomixReplica.<String, String>getMap(name()).join();
     }
     
     protected void stop() {
         try {
-            copycatServer.shutdown().get(1, TimeUnit.MINUTES);
+            atomixReplica.shutdown().get(1, TimeUnit.MINUTES);
         } catch (TimeoutException | InterruptedException | ExecutionException e) {
             Throwables.propagate(e);
         }
@@ -82,5 +88,9 @@ public final class PeerServer {
     
     private String name() {
         return System.getProperty("name") + "-peer";
+    }
+    
+    public static DistributedMap<String, String> sharedResource() {
+        return mapResource;
     }
 }

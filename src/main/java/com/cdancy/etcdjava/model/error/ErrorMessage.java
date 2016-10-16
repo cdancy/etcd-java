@@ -15,19 +15,16 @@
  * limitations under the License.
  */
 
-package com.cdancy.etcdjava.commands;
-
-import io.atomix.copycat.Command;
+package com.cdancy.etcdjava.model.error;
 
 /**
- * Stub class at the moment that has no use.
+ * Model of ErrorMessage.
  * 
  * @author cdancy
  */
-public class PutKey implements Command<Object> {
-    
-    
-    public PutKey(String key, String value) {
-        
-    }
+public class ErrorMessage {
+    public int errorCode;
+    public String message;
+    public String cause;
+    public int index;
 }

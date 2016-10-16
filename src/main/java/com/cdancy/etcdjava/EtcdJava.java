@@ -35,17 +35,20 @@ public class EtcdJava {
     private final ClientServer clientServer;
     private final PeerServer peerServer;
     
+    /**
+     * Initializes system properties, client, and peer server.
+     */
     public EtcdJava() {
-        init();
+        initSystemProperties();
         clientServer = new ClientServer();
         peerServer = new PeerServer();
     }
     
-    private void init() {
-        EtcdJavaUtils.setSystemPropertyIfNonExistent("name", "etcd-java");
-        EtcdJavaUtils.setSystemPropertyIfNonExistent("version", "v2");
-        EtcdJavaUtils.setSystemPropertyIfNonExistent("serverVersion", "2.0.0");
-        EtcdJavaUtils.setSystemPropertyIfNonExistent("clusterVersion", "2.0.0");
+    private void initSystemProperties() {
+        EtcdJavaUtils.setSystemPropertyIfAbsent("name", "etcd-java");
+        EtcdJavaUtils.setSystemPropertyIfAbsent("version", "v2");
+        EtcdJavaUtils.setSystemPropertyIfAbsent("serverVersion", "2.0.0");
+        EtcdJavaUtils.setSystemPropertyIfAbsent("clusterVersion", "2.0.0");
     }
     
     /**

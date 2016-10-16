@@ -19,7 +19,6 @@ package com.cdancy.etcdjava;
 
 import co.cask.http.NettyHttpService;
 import com.cdancy.etcdjava.annotations.Controller;
-import com.cdancy.etcdjava.utils.EtcdJavaUtils;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;

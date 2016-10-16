@@ -11,12 +11,15 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-# IDE generated dirs
+# IDE generated files
 /.nb-gradle/
+/.idea/
+*.iml
 
-# gradle generated dirs
+# build generated files
 /build/
 .gradle/
+/target/
 
 # default etcd logs
 /default.etcd/

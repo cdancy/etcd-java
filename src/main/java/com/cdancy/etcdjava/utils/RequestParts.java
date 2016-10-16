@@ -15,20 +15,35 @@
  * limitations under the License.
  */
 
-package com.cdancy.etcdjava;
 
-import io.atomix.copycat.server.StateMachine;
-import io.atomix.copycat.server.StateMachineExecutor;
+package com.cdancy.etcdjava.utils;
+
+import javax.annotation.Nullable;
 
 /**
- * Un-implemented state machine.
+ * Various parts of a `Key` request.
  * 
  * @author cdancy
  */
-public class EtcdJavaStateMachine extends StateMachine {
+public class RequestParts {
     
-    @Override
-    protected void configure(StateMachineExecutor executor) {
-        
+    public final String key;
+    public final String value;
+    public final String dir;
+    public final String path;
+
+    /**
+     * Ctor for RequestParts.
+     * 
+     * @param key the key of request.
+     * @param value the value of the key.
+     * @param dir the directory of the key.
+     * @param path the full URI path of dir and key.
+     */
+    public RequestParts(String key, @Nullable String value, @Nullable String dir, String path) {
+        this.key = key;
+        this.value = value;
+        this.dir = dir;
+        this.path = path;
     }
 }
