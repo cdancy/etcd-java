@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.cdancy.etcdjava.model.Members;
+package com.cdancy.etcdjava.model.members;
 
 import java.io.Serializable;
 import java.util.Collection;

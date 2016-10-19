@@ -17,7 +17,7 @@
 
 package com.cdancy.etcdjava;
 
-import com.cdancy.etcdjava.model.Members.Member;
+import com.cdancy.etcdjava.model.members.Member;
 import com.cdancy.etcdjava.model.keys.Key;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
@@ -52,13 +52,13 @@ public final class PeerServer {
     
     private static final Logger logger = LoggerFactory.getLogger(PeerServer.class);
 
-    public final static String DEFAULT_PEER_HOST = "127.0.0.1";
-    public final static int DEFAULT_PEER_PORT = 2380;
-    private volatile static Address address;
+    public static final String DEFAULT_PEER_HOST = "127.0.0.1";
+    public static final int DEFAULT_PEER_PORT = 2380;
+    private static volatile Address address;
     private volatile LocalMember localMember = null;
     
     // local cache of Member(s) and their metadata
-    private final static Map<String, Member> membersCache = new ConcurrentHashMap<>();
+    private static final Map<String, Member> membersCache = new ConcurrentHashMap<>();
     
     private volatile AtomixReplica atomixReplica;
     private File logsDirectory = new File(System.getProperty("user.dir") + "/default.etcd");

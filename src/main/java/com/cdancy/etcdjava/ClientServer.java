@@ -40,9 +40,9 @@ public final class ClientServer {
     
     private static final Logger logger = LoggerFactory.getLogger(ClientServer.class);
 
-    public final static String DEFAULT_CLIENT_HOST = "127.0.0.1";
-    public final static int DEFAULT_CLIENT_PORT = 2379;
-    private volatile static Address address;
+    public static final String DEFAULT_CLIENT_HOST = "127.0.0.1";
+    public static final int DEFAULT_CLIENT_PORT = 2379;
+    private static volatile Address address;
     
     private static final Reflections endpointsPackage = new Reflections("com.cdancy.etcdjava.endpoints");    
     private volatile NettyHttpService nettyHttpService;

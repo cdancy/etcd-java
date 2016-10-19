@@ -22,7 +22,7 @@ import static com.cdancy.etcdjava.PeerServer.members;
 import co.cask.http.AbstractHttpHandler;
 import co.cask.http.HttpResponder;
 import com.cdancy.etcdjava.annotations.Endpoint;
-import com.cdancy.etcdjava.model.Members.Members;
+import com.cdancy.etcdjava.model.members.Members;
 import javax.inject.Named;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -46,6 +46,12 @@ import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 @Endpoint
 public class MembersEndpoint extends AbstractHttpHandler {
     
+    /**
+     * Lists all members in cluster.
+     * 
+     * @param request HttpRequest
+     * @param responder HttpResponder
+     */
     @Named("members:list")
     @GET
     public void list(HttpRequest request, HttpResponder responder) {
@@ -54,12 +60,24 @@ public class MembersEndpoint extends AbstractHttpHandler {
         responder.sendJson(HttpResponseStatus.OK, members);
     }
     
+    /**
+     * Add a member to cluster.
+     * 
+     * @param request HttpRequest
+     * @param responder HttpResponder
+     */
     @Named("members:add")
     @POST
     public void add(HttpRequest request, HttpResponder responder) {
         
     }
     
+    /**
+     * Delete member from cluster.
+     * 
+     * @param request HttpRequest
+     * @param responder HttpResponder
+     */
     @Named("members:delete")
     @Path("/{id}")
     @DELETE
