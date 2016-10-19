@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package com.cdancy.etcdjava.controllers;
+package com.cdancy.etcdjava.endpoints;
 
 import co.cask.http.AbstractHttpHandler;
 import co.cask.http.HttpResponder;
-import com.cdancy.etcdjava.annotations.Controller;
+import com.cdancy.etcdjava.annotations.Endpoint;
 import com.cdancy.etcdjava.model.miscellaneous.Health;
 import com.cdancy.etcdjava.model.miscellaneous.Version;
 import com.cdancy.etcdjava.utils.EtcdJavaUtils;
@@ -37,8 +37,8 @@ import org.jboss.netty.handler.codec.http.HttpResponseStatus;
  * @author cdancy
  */
 @Produces(MediaType.APPLICATION_JSON)
-@Controller
-public class Miscellaneous extends AbstractHttpHandler {
+@Endpoint
+public class MiscellaneousEndpoint extends AbstractHttpHandler {
     
     /**
      * Serves the 'version' endpoint.

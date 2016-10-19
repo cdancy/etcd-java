@@ -15,22 +15,22 @@
  * limitations under the License.
  */
 
-package com.cdancy.etcdjava.controllers;
+package com.cdancy.etcdjava.endpoints;
 
 import co.cask.http.AbstractHttpHandler;
-import com.cdancy.etcdjava.annotations.Controller;
+import com.cdancy.etcdjava.annotations.Endpoint;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Serves the 'roles' endpoint.
+ * Serves the 'users' endpoint.
  * 
  * @author cdancy
  */
-@Path("/{version}/auth/roles")
+@Path("/{version}/auth/users")
 @Produces(MediaType.APPLICATION_JSON)
-@Controller
-public class Roles extends AbstractHttpHandler {
+@Endpoint
+public class UsersEndpoint extends AbstractHttpHandler {
     
 }

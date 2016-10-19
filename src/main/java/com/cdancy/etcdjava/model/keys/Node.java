@@ -27,6 +27,7 @@ import java.io.Serializable;
 public class Node implements Serializable {
     public String key;
     public String value;
+    public String nodes;
     public Boolean dir;
     public int modifiedIndex;
     public int createdIndex;

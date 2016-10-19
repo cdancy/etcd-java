@@ -40,6 +40,8 @@ public class RequestUtils {
         key.node = new Node();
         key.node.key = requestParts.key;
         key.node.value = requestParts.value;
+        key.node.createdIndex = 4;
+        key.node.modifiedIndex = 4;
         return key;
     }
     
@@ -51,12 +53,16 @@ public class RequestUtils {
      * @return RequestParts object.
      */
     public static RequestParts parseRequest(String path, String body) {
-        int index = path.lastIndexOf("/");
-        String dir = (index > 0) ? path.substring(0, index) : null;
-        String key = path.substring(index, path.length());
+        
+        QueryStringDecoder decoder = new QueryStringDecoder(path);
+        String initialPath = decoder.getPath();
+        int index = initialPath.lastIndexOf("/");
+        String dir = (index > 0) ? initialPath.substring(0, index) : null;
+        String key = initialPath.substring(index, initialPath.length());
+        
         String value;
         if (body != null) {
-            QueryStringDecoder decoder = new QueryStringDecoder("?" + body);
+            decoder = new QueryStringDecoder("?" + body);
             List<String> values = decoder.getParameters().get("value");
             if (values.size() == 1) {
                 value = values.get(0);
@@ -66,6 +72,6 @@ public class RequestUtils {
         } else { 
             value = null; 
         }
-        return new RequestParts(key, value, dir, path);
+        return new RequestParts(key, value, dir, path, decoder.getParameters());
     }
 }

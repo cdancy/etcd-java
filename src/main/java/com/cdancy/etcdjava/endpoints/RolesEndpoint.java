@@ -15,17 +15,22 @@
  * limitations under the License.
  */
 
-package com.cdancy.etcdjava.model.keys;
+package com.cdancy.etcdjava.endpoints;
 
-import java.io.Serializable;
+import co.cask.http.AbstractHttpHandler;
+import com.cdancy.etcdjava.annotations.Endpoint;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 /**
- * Model of Key object.
+ * Serves the 'roles' endpoint.
  * 
  * @author cdancy
  */
-public class Key implements Serializable {
-    public String action;
-    public Node node;
-    public Node prevNode;
+@Path("/{version}/auth/roles")
+@Produces(MediaType.APPLICATION_JSON)
+@Endpoint
+public class RolesEndpoint extends AbstractHttpHandler {
+    
 }

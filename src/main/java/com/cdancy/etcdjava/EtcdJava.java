@@ -19,6 +19,7 @@ package com.cdancy.etcdjava;
 
 import com.cdancy.etcdjava.utils.EtcdJavaUtils;
 import com.google.common.base.Throwables;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,36 +48,37 @@ public class EtcdJava {
     private void initSystemProperties() {
         EtcdJavaUtils.setSystemPropertyIfAbsent("name", "etcd-java");
         EtcdJavaUtils.setSystemPropertyIfAbsent("version", "v2");
-        EtcdJavaUtils.setSystemPropertyIfAbsent("serverVersion", "2.0.0");
-        EtcdJavaUtils.setSystemPropertyIfAbsent("clusterVersion", "2.0.0");
+        EtcdJavaUtils.setSystemPropertyIfAbsent("serverVersion", "2.3.7");
+        EtcdJavaUtils.setSystemPropertyIfAbsent("clusterVersion", "2.3.0");
+        EtcdJavaUtils.setSystemPropertyIfAbsent("instanceID", UUID.randomUUID().toString());
     }
     
     /**
      * Start instance of etcd-java.
      */
     public synchronized void start() {
-        logger.info("Starting etcd-java ...");
+        logger.info("Starting " + System.getProperty("name") + " ...");
         peerServer.start();
         clientServer.start();
-        logger.info("Started etcd-java ...");
+        logger.info("Started " + System.getProperty("name") + " ...");
     }
     
     /**
      * Stop instance of etcd-java.
      */
     public synchronized void stop() {
-        logger.info("Stopping etcd-java ...");
+        logger.info("Stopping " + System.getProperty("name") + " ...");
         try {
             clientServer.stop();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Problems encountered stopping clientServer", e);
         }
         try {
             peerServer.stop();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Problems encountered stopping peerServer", e);
         }
-        logger.info("Stopping etcd-java ...");
+        logger.info("Stopped " + System.getProperty("name") + " ...");
     }
     
     /**
@@ -84,15 +86,15 @@ public class EtcdJava {
      * 
      * @param args no-op.
      */
-    public static void main(String [] args) {
+    public static void main(String [] args) {  
         
         EtcdJava server = new EtcdJava();
         server.start();
         
         try {
-            Thread.sleep(200000);            
+            Thread.sleep(90000);            
         } catch (Exception e) {
-            Throwables.propagate(e);
+            throw Throwables.propagate(e);
         }
         
         server.stop();

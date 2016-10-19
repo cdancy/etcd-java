@@ -18,6 +18,8 @@
 
 package com.cdancy.etcdjava.utils;
 
+import java.util.List;
+import java.util.Map;
 import javax.annotation.Nullable;
 
 /**
@@ -31,6 +33,7 @@ public class RequestParts {
     public final String value;
     public final String dir;
     public final String path;
+    public final Map<String, List<String>> params;
 
     /**
      * Ctor for RequestParts.
@@ -38,12 +41,14 @@ public class RequestParts {
      * @param key the key of request.
      * @param value the value of the key.
      * @param dir the directory of the key.
-     * @param path the full URI path of dir and key.
+     * @param path the path of request.
+     * @param params the query parameters of request
      */
-    public RequestParts(String key, @Nullable String value, @Nullable String dir, String path) {
+    public RequestParts(String key, @Nullable String value, @Nullable String dir, String path, @Nullable Map<String, List<String>> params) {
         this.key = key;
         this.value = value;
         this.dir = dir;
         this.path = path;
+        this.params = params;
     }
 }

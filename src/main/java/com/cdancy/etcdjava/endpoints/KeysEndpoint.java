@@ -15,21 +15,23 @@
  * limitations under the License.
  */
 
-package com.cdancy.etcdjava.controllers;
+package com.cdancy.etcdjava.endpoints;
 
 import static com.cdancy.etcdjava.utils.RequestUtils.keyFromRequestParts;
 import static com.cdancy.etcdjava.utils.RequestUtils.parseRequest;
+import static com.cdancy.etcdjava.PeerServer.distributedMap;
 
 import co.cask.http.AbstractHttpHandler;
 import co.cask.http.HttpResponder;
 import com.cdancy.etcdjava.Errors;
 import com.cdancy.etcdjava.KeyActions;
-import com.cdancy.etcdjava.PeerServer;
-import com.cdancy.etcdjava.annotations.Controller;
+import com.cdancy.etcdjava.annotations.Endpoint;
 import com.cdancy.etcdjava.model.error.ErrorMessage;
 import com.cdancy.etcdjava.model.keys.Key;
 import com.cdancy.etcdjava.utils.RequestParts;
+import com.google.common.collect.Lists;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -41,7 +43,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.apache.commons.lang3.SerializationUtils;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
@@ -55,11 +56,11 @@ import org.slf4j.LoggerFactory;
 @Path("/{version}/keys")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.WILDCARD)
-@Controller
-public class Keys extends AbstractHttpHandler {
+@Endpoint
+public class KeysEndpoint extends AbstractHttpHandler {
         
-    private static final Logger logger = LoggerFactory.getLogger(Keys.class);
-    private static final String basePath =  Keys.class.getAnnotation(Path.class).value().replace("{version}", System.getProperty("version"));
+    private static final Logger logger = LoggerFactory.getLogger(KeysEndpoint.class);
+    private static final String basePath =  KeysEndpoint.class.getAnnotation(Path.class).value().replace("{version}", System.getProperty("version"));
     private static final Charset charset = Charset.forName("UTF-8");
     
     /**
@@ -73,10 +74,11 @@ public class Keys extends AbstractHttpHandler {
     @PUT
     public void setKey(HttpRequest request, HttpResponder responder) {
         RequestParts parts = parseRequest(request.getUri().replaceFirst(basePath, ""), request.getContent().toString(charset)); 
+        
         Key key = keyFromRequestParts(parts);
         key.action = KeyActions.SET.toString();
-        PeerServer.sharedResource().put(key.node.key, key.node.value);
-        responder.sendJson(HttpResponseStatus.CREATED, key);
+        distributedMap().put(key.node.key, Lists.newArrayList(key));
+        responder.sendJson(HttpResponseStatus.OK, key);
     }
     
     /**
@@ -90,18 +92,18 @@ public class Keys extends AbstractHttpHandler {
     @GET
     public void getKey(HttpRequest request, HttpResponder responder) {
         RequestParts parts = parseRequest(request.getUri().replaceFirst(basePath, ""), null); 
-        String value;
+        
+        List<Key> keyList;
         try {
-            value = PeerServer.sharedResource().get(parts.key).get(1, TimeUnit.MINUTES); 
+            keyList = distributedMap().get(parts.key).get(1, TimeUnit.MINUTES); 
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             logger.info("Problems encountered GET'ing key '" + parts.key + "'", e);
-            value = null;
+            keyList = null;
         }
         
-        if (value != null) {
-            Key key = keyFromRequestParts(parts);
+        if (keyList != null) {
+            Key key = keyList.get(0);
             key.action = KeyActions.GET.toString();
-            key.node.value = value;
             responder.sendJson(HttpResponseStatus.OK, key);
         } else {
             ErrorMessage errorMessage = Errors.KEY_NOT_FOUND.asErrorMessage(parts.key, -1);
@@ -120,19 +122,19 @@ public class Keys extends AbstractHttpHandler {
     @DELETE
     public void deleteKey(HttpRequest request, HttpResponder responder) {
         RequestParts parts = parseRequest(request.getUri().replaceFirst(basePath, ""), null); 
-        String value;
+        
+        List<Key> keyList;
         try {
-            value = PeerServer.sharedResource().remove(parts.key).get(1, TimeUnit.MINUTES);
+            keyList = distributedMap().remove(parts.key).get(1, TimeUnit.MINUTES);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             logger.info("Problems encountered DELETE'ing key '" + parts.key + "'", e);
-            value = null;
+            keyList = null;
         }
         
-        if (value != null) {
+        if (keyList != null) {
             Key key = keyFromRequestParts(parts);
             key.action = KeyActions.DELETE.toString();
-            key.prevNode = SerializationUtils.clone(key.node);
-            key.prevNode.value = value;
+            key.prevNode = keyList.get(0).node;
             responder.sendJson(HttpResponseStatus.OK, key);
         } else {
             ErrorMessage errorMessage = Errors.KEY_NOT_FOUND.asErrorMessage(parts.key, -1);

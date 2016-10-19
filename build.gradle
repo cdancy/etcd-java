@@ -29,17 +29,15 @@ repositories {
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
+    compile 'ch.qos.logback:logback-classic:1.1.7'
+    compile 'javax.ws.rs:javax.ws.rs-api:2.0.1'
+    compile 'javax.inject:javax.inject:1'
     compile 'io.atomix:atomix:1.0.0-rc9'
     compile 'io.atomix.catalyst:catalyst-local:1.1.1'
     compile 'co.cask.http:netty-http:0.16.0'
-    compile 'com.google.code.gson:gson:2.7'
-    compile 'com.google.guava:guava:19.0'
-    compile 'javax.inject:javax.inject:1'
     compile 'org.reflections:reflections:0.9.10'
-    compile 'ch.qos.logback:logback-classic:1.1.7'
-    compile 'javax.ws.rs:javax.ws.rs-api:2.0.1'
     compile 'org.apache.commons:commons-lang3:3.4'
-
+    compile 'net.jodah:failsafe:0.9.5'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.1.0'

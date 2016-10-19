@@ -15,22 +15,16 @@
  * limitations under the License.
  */
 
-package com.cdancy.etcdjava.controllers;
+package com.cdancy.etcdjava.model.Members;
 
-import co.cask.http.AbstractHttpHandler;
-import com.cdancy.etcdjava.annotations.Controller;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
- * Serves the 'stats' endpoint.
+ * Model of Members object.
  * 
  * @author cdancy
  */
-@Path("/{version}/stats")
-@Produces(MediaType.APPLICATION_JSON)
-@Controller
-public class Stats extends AbstractHttpHandler {
-    
+public class Members implements Serializable {
+    public Collection<Member> members;
 }

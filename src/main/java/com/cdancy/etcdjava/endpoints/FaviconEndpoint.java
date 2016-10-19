@@ -15,17 +15,31 @@
  * limitations under the License.
  */
 
-package com.cdancy.etcdjava.model.keys;
+package com.cdancy.etcdjava.endpoints;
 
-import java.io.Serializable;
+import co.cask.http.AbstractHttpHandler;
+import co.cask.http.HttpResponder;
+import com.cdancy.etcdjava.annotations.Endpoint;
+import javax.inject.Named;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import org.jboss.netty.handler.codec.http.HttpRequest;
+import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 
 /**
- * Model of Key object.
+ * NO-OP for favicon.ico requests.
  * 
  * @author cdancy
  */
-public class Key implements Serializable {
-    public String action;
-    public Node node;
-    public Node prevNode;
+@Path("/favicon.ico")
+@Produces("image/x-icon")
+@Endpoint
+public class FaviconEndpoint extends AbstractHttpHandler {
+    
+    @Named("favicon:ico")
+    @GET
+    public void favicon(HttpRequest request, HttpResponder responder) {
+        responder.sendStatus(HttpResponseStatus.OK);
+    }
 }

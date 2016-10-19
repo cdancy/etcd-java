@@ -17,23 +17,13 @@
 
 package com.cdancy.etcdjava.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.text.DateFormat;
-
 /**
  * Static methods/variables used for system-wide purpose.
  * 
  * @author cdancy
  */
 public class EtcdJavaUtils {
-    
-    public static final Gson gson = new GsonBuilder()
-             .enableComplexMapKeySerialization()
-             .setDateFormat(DateFormat.LONG)
-             .setLenient()
-             .create();
-    
+
     public static boolean isHealthy() {
         return true;
     }

@@ -15,21 +15,19 @@
  * limitations under the License.
  */
 
-package com.cdancy.etcdjava.annotations;
+package com.cdancy.etcdjava.model.Members;
 
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import java.io.Serializable;
+import java.util.List;
 
 /**
- * Used to denote a given type/class is a controller/endpoint.
+ * Model of Member object.
  * 
  * @author cdancy
  */
-@Target(TYPE)
-@Retention(RUNTIME)
-public @interface Controller {
-    
+public class Member implements Serializable {
+    public String id;
+    public String name;
+    public List<String> peerURLs;
+    public List<String> clientURLs;
 }

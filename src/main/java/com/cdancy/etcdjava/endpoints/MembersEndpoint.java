@@ -15,31 +15,55 @@
  * limitations under the License.
  */
 
-package com.cdancy.etcdjava.controllers;
+package com.cdancy.etcdjava.endpoints;
+
+import static com.cdancy.etcdjava.PeerServer.members;
 
 import co.cask.http.AbstractHttpHandler;
 import co.cask.http.HttpResponder;
-import com.cdancy.etcdjava.annotations.Controller;
+import com.cdancy.etcdjava.annotations.Endpoint;
+import com.cdancy.etcdjava.model.Members.Members;
 import javax.inject.Named;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpResponseStatus;
 
 /**
- * NO-OP for favicon.ico requests.
+ * Serves the 'members' endpoint.
  * 
  * @author cdancy
  */
-@Path("/favicon.ico")
-@Produces("image/x-icon")
-@Controller
-public class Favicon extends AbstractHttpHandler {
+@Path("/{version}/members")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.WILDCARD)
+@Endpoint
+public class MembersEndpoint extends AbstractHttpHandler {
     
-    @Named("favicon:ico")
+    @Named("members:list")
     @GET
-    public void favicon(HttpRequest request, HttpResponder responder) {
-        responder.sendStatus(HttpResponseStatus.OK);
+    public void list(HttpRequest request, HttpResponder responder) {
+        Members members = new Members();
+        members.members = members().values();
+        responder.sendJson(HttpResponseStatus.OK, members);
+    }
+    
+    @Named("members:add")
+    @POST
+    public void add(HttpRequest request, HttpResponder responder) {
+        
+    }
+    
+    @Named("members:delete")
+    @Path("/{id}")
+    @DELETE
+    public void delete(HttpRequest request, HttpResponder responder, @PathParam("id") String id) {
+        
     }
 }

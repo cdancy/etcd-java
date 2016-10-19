@@ -18,9 +18,10 @@
 package com.cdancy.etcdjava;
 
 import co.cask.http.NettyHttpService;
-import com.cdancy.etcdjava.annotations.Controller;
+import com.cdancy.etcdjava.annotations.Endpoint;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
+import io.atomix.catalyst.transport.Address;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -37,23 +38,33 @@ import org.slf4j.LoggerFactory;
  */
 public final class ClientServer {
     
-    private static final Reflections controllersPackage = new Reflections("com.cdancy.etcdjava.controllers");
     private static final Logger logger = LoggerFactory.getLogger(ClientServer.class);
-    
-    private volatile NettyHttpService nettyHttpService;
-    private int port = 2379;
-        
-    public ClientServer() {
 
+    public final static String DEFAULT_CLIENT_HOST = "127.0.0.1";
+    public final static int DEFAULT_CLIENT_PORT = 2379;
+    private volatile static Address address;
+    
+    private static final Reflections endpointsPackage = new Reflections("com.cdancy.etcdjava.endpoints");    
+    private volatile NettyHttpService nettyHttpService;
+        
+    private final String name = System.getProperty("name") + "-client";
+
+    public ClientServer() {
+        address = new Address(DEFAULT_CLIENT_HOST, DEFAULT_CLIENT_PORT);
     }
     
     public ClientServer(int port) {
-        this.port = port;
+        address = new Address(DEFAULT_CLIENT_HOST, port);
+    }
+    
+    public ClientServer(String host, int port) {
+        address = new Address(host, port);
     }
     
     private void init() {
         nettyHttpService = NettyHttpService.builder(name())
-                .setPort(port)
+                .setHost(address.host())
+                .setPort(address.port())
                 .addHttpHandlers(getControllers())
                 .build();        
     }
@@ -63,7 +74,7 @@ public final class ClientServer {
             init();
             nettyHttpService.startAsync().awaitRunning(1, TimeUnit.MINUTES);
         } catch (TimeoutException e) {
-            Throwables.propagate(e);
+            throw Throwables.propagate(e);
         }
     }
     
@@ -71,7 +82,7 @@ public final class ClientServer {
         try {
             nettyHttpService.stopAsync().awaitTerminated(1, TimeUnit.MINUTES);
         } catch (TimeoutException e) {
-            Throwables.propagate(e);
+            throw Throwables.propagate(e);
         }
     }
 
@@ -80,19 +91,23 @@ public final class ClientServer {
     */
     private ImmutableList getControllers() {
         List<Object> controllers = new ArrayList<>();
-        Set<Class<?>> singletons = controllersPackage.getTypesAnnotatedWith(Controller.class);
+        Set<Class<?>> singletons = endpointsPackage.getTypesAnnotatedWith(Endpoint.class);
         for (Class clazz : singletons) {
             try {
-                logger.debug("Loading controller @ " + clazz.getName());
+                logger.debug("Loading endpoint @ " + clazz.getName());
                 controllers.add(clazz.newInstance());
-            } catch (InstantiationException | IllegalAccessException ie) {
-                Throwables.propagate(ie);
+            } catch (InstantiationException | IllegalAccessException e) {
+                throw Throwables.propagate(e);
             }
         }
         return ImmutableList.copyOf(controllers);
     }
     
     public String name() {
-        return System.getProperty("name") + "-client";
+        return name;
+    }
+    
+    public static Address address() {
+        return address;
     }
 }
